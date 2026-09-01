@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auramon Rogue</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+            /* Contenedor del juego con tamaño responsivo y bordes redondeados */
+            .game-wrapper {
+                width: min(96vw, 1024px);
+                aspect-ratio: 5 / 3; /* 800x480 -> 5:3 */
+                position: relative;
+                border-radius: 18px;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+                background-color: #000;
+                z-index: 2; /* sobre el fondo */
+            }
+
+            /* Imagen de fondo full-screen detrás del wrapper */
+            .fondo-html {
+                position: fixed;
+                inset: 0;
+                width: 100vw;
+                height: 100vh;
+                object-fit: cover;
+                z-index: 0; /* Detrás */
+            }
+
+            /* Fuerza al lienzo del juego a ponerse por encima del fondo dentro del wrapper */
+            #game-container {
+                position: relative;
+                z-index: 1; /* Por encima del fondo pero dentro del wrapper */
+                width: 100%;
+                height: 100%;
+            }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+    <!-- Runtime error overlay: muestra errores JS y estado de Phaser en la página -->
+    <script>
+        (function(){
+            const overlay = document.createElement('div');
+            overlay.id = 'error-overlay';
+            overlay.style = 'position:fixed;left:0;top:0;right:0;background:rgba(0,0,0,0.85);color:#fff;padding:10px;font-family:monospace;z-index:9999;display:none;white-space:pre-wrap;max-height:40vh;overflow:auto;';
+            function appendOverlay(){ if(!document.body.contains(overlay)) document.body.appendChild(overlay); }
+            function show(msg){ appendOverlay(); overlay.style.display='block'; overlay.textContent = msg; }
+            window.addEventListener('error', function(e){ show('Error: ' + (e.message || e.error || e)); });
+            window.addEventListener('unhandledrejection', function(e){ show('Unhandled promise rejection: ' + (e.reason || e)); });
+            document.addEventListener('DOMContentLoaded', function(){ appendOverlay();
+                if (typeof Phaser === 'undefined') {
+                    show('Phaser not found. Check CDN load and network.');
+                } else {
+                    console.log('Phaser loaded', Phaser.VERSION || 'unknown');
+                }
+                // Diagnóstico: comprobar la imagen de fondo en el DOM
+                const img = document.querySelector('.fondo-html');
+                if (!img) {
+                    show('Imagen de fondo no encontrada en DOM (.fondo-html)');
+                } else {
+                    const info = `Imagen DOM src: ${img.getAttribute('src')}\nnaturalWidth: ${img.naturalWidth} naturalHeight: ${img.naturalHeight}`;
+                    if (img.complete && img.naturalWidth > 0) {
+                        console.log('Background image loaded:', info);
+                    } else {
+                        show('Imagen encontrada pero no cargada:\n' + info);
+                    }
+                }
+            });
+        })();
+    </script>
+</head>
+<body>
+
+    <!-- Imagen de fondo full-screen -->
+    <img src="imagenes/fondo_auramon.png" class="fondo-html" alt="Fondo Auramon">
+
+
+        <div id="game-container"></div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
+
