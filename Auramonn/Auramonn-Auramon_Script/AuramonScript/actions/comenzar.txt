@@ -1,0 +1,12 @@
+Comenzar intento
+
+Descripción:
+- Inicia un nuevo run roguelike.
+- Resetear estado relevante: generar mazmorras, mazo de cartas, Auramons iniciales.
+
+Pasos a implementar:
+1. Confirmar con el jugador (advertir sobre pérdida de progreso si aplica).
+2. Inicializar estado: seed aleatoria, limpiar inventario temporal.
+3. Cambiar a la escena de juego principal y comenzar el primer encuentro.
+
+Nota: La implementación real requiere definir estructuras de estado y persistencia.

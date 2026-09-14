@@ -1,0 +1,12 @@
+Auramons
+
+Descripción:
+- Lista de criaturas recolectadas y sus estadísticas.
+- Opciones: ver detalles, ordenar, seleccionar para el equipo.
+
+Pasos a implementar:
+1. Leer el inventario de Auramons (desde el estado del juego).
+2. Mostrar una UI con tarjetas por criatura (nombre, nivel, tipo, vida).
+3. Permitir acciones: inspeccionar, equipar, liberar.
+
+Nota: Este archivo describe la vista 'Auramons'. Implementar la UI en la escena correspondiente.

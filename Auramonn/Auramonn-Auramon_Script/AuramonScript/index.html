@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auramon Rogue</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Serif', 'Times New Roman', serif;
+        }
+
+        /* Imagen de fondo full-screen */
+        .fondo-html {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        /* Contenedor del Menú de Botones (Posicionado a la derecha de la pantalla) */
+        .menu-botones {
+            position: absolute;
+            right: 10%;
+            display: flex;
+            flex-direction: column;
+            gap: 25px; /* Espacio entre cada botón */
+            z-index: 10; /* Forzado por encima de cualquier otra cosa */
+        }
+
+        /* Contenedor individual de cada botón */
+        .boton-contenedor {
+            position: relative;
+            width: 320px;
+            height: 105px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        /* Estilo para las imágenes de tus botones */
+        .boton-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: filter 0.2s ease;
+        }
+
+        /* Texto superpuesto exactamente en el centro de la imagen del botón */
+        .boton-texto {
+            position: absolute;
+            top: 100%;
+            left: 100%;
+            transform: translate(-50%, -50%);
+            color: #f3e5ab; /* Dorado suave */
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            pointer-events: none; /* Evita que el texto interfiera con el click */
+            transition: color 0.2s ease, scale 0.2s ease;
+        }
+
+        /* Efectos visuales cuando pasas el cursor por encima del botón */
+        .boton-contenedor:hover {
+            transform: scale(1.05); /* Efecto de agrandado sutil */
+        }
+
+        .boton-contenedor:hover .boton-img {
+            filter: drop-shadow(0 0 8px #00fff0) tint(0x00fff0); /* Destello cian tipo Aura */
+        }
+
+        .boton-contenedor:hover .boton-texto {
+            color: #ffffff;
+            scale: 1.05;
+        }
+
+        /* Estilos del cuadro de texto flotante (Overlay) cuando haces click */
+        #action-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .action-box {
+            background: #111;
+            color: #fff;
+            padding: 20px;
+            max-width: 720px;
+            width: 90%;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+        }
+        .action-close {
+            float: right;
+            background: #222;
+            color: #fff;
+            border: 0;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .action-content {
+            white-space: pre-wrap;
+            max-height: 60vh;
+            overflow: auto;
+            margin-top: 10px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tu fondo alegre del bosque cargado de forma limpia -->
+    <img src="imagenes/fondo_auramon.png" class="fondo-html" alt="Fondo Auramon">
+
+    <!-- MENÚ DE BOTONES HTML REALES CON IMG SRC -->
+    <div class="menu-botones">
+        
+        <div class="boton-continuar-partida" onclick="showActionFile('actions/continuar.txt')">
+            <img src="imagenes/boton_auramon.png" class="boton-img" alt="Botón">
+            <div class="boton-texto">Continuar partida</div>
+        </div>
+
+        <div class="boton-auramons" onclick="showActionFile('actions/auramons.txt')">
+            <img src="imagenes/boton_auramon.png" class="boton-img" alt="Botón">
+            <div class="boton-texto">Auramons</div>
+        </div>
+
+        <div class="boton-iniciar-partida" onclick="showActionFile('actions/comenzar.txt')">
+            <img src="imagenes/boton_inicio.png" class="boton-img" alt="Botón">
+   
+        </div>
+
+    </div>
+
+    <!-- Script nativo para manejar la carga de tus archivos de texto al hacer click -->
+    <script>
+        function ensureOverlay() {
+            if (document.getElementById('action-overlay')) return;
+            const overlay = document.createElement('div');
+            overlay.id = 'action-overlay';
+            overlay.innerHTML = `
+                <div class="action-box">
+                    <button class="action-close" onclick="document.getElementById('action-overlay').remove()">Cerrar</button>
+                    <pre id="action-content" class="action-content"></pre>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        async function showActionFile(path) {
+            ensureOverlay();
+            const contentEl = document.getElementById('action-content');
+            contentEl.textContent = 'Cargando...';
+            try {
+                const res = await fetch(path);
+                if (!res.ok) throw new Error('No se pudo cargar ' + path + ' (' + res.status + ')');
+                const text = await res.text();
+                contentEl.textContent = text;
+            } catch (err) {
+                contentEl.textContent = 'Error al cargar acción:\n' + err.message;
+            }
+        }
+    </script>
+</body>
+</html>

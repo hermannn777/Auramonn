@@ -1,0 +1,12 @@
+Continuar partida
+
+Descripción:
+- Carga la última partida guardada (si existe).
+- Restaurar estado: nivel, Auramons, inventario, posición.
+
+Pasos a implementar en el juego:
+1. Comprobar si existe un archivo de guardado o entrada en localStorage.
+2. Si existe, deserializar JSON y aplicar al estado del juego.
+3. Mostrar confirmación en pantalla y volver a la escena principal.
+
+Nota: Por ahora este archivo es una especificación. Puedes implementar la carga real usando localStorage o un backend.
