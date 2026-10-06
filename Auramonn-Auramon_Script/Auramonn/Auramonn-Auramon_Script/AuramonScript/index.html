@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auramon Rogue</title>
+    
+    <!-- Vinculación del CSS externo -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Carga correcta de la biblioteca de Phaser -->
+    <script src="https://jsdelivr.net"></script>
+</head>
+<body>
+
+    <div class="game-container">
+        <!-- Fondo base alegre del bosque -->
+        <img src="imagenes/fondo_auramon.png" class="fondo-html" alt="Fondo">
+
+        <!-- MENÚ LATERAL DE BOTONES (Alineados a la derecha por el style.css) -->
+        <div class="menu-botones">
+            <!-- Botón Iniciar Partida -->
+            <img src="imagenes/iniciar_partida.png" class="boton-click" alt="Iniciar Partida" onclick="showActionFile('actions/comenzar.txt')">
+            
+            <!-- Botón Continuar Partida -->
+            <img src="imagenes/continuar_partida.png" class="boton-click" alt="Continuar Partida" onclick="showActionFile('actions/continuar.txt')">
+            
+            <!-- Botón Auramons -->
+            <img src="imagenes/auramons.png" class="boton-click" alt="Auramons" onclick="showActionFile('actions/auramons.txt')">
+        </div>
+    </div>
+
+    <!-- Lógica para abrir los archivos de texto al hacer click -->
+    <script>
+        function ensureOverlay() {
+            if (document.getElementById('action-overlay')) return;
+            const overlay = document.createElement('div');
+            overlay.id = 'action-overlay';
+            overlay.innerHTML = `
+                <div class="action-box">
+                    <button class="action-close" onclick="document.getElementById('action-overlay').remove()">Cerrar</button>
+                    <pre id="action-content" class="action-content"></pre>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        async function showActionFile(path) {
+            ensureOverlay();
+            const contentEl = document.getElementById('action-content');
+            contentEl.textContent = 'Cargando...';
+            try {
+                const res = await fetch(path);
+                if (!res.ok) throw new Error('No se pudo abrir el archivo ' + path);
+                const text = await res.text();
+                contentEl.textContent = text;
+            } catch (err) {
+                contentEl.textContent = 'Error:\n' + err.message;
+            }
+        }
+    </script>
+</body>
+</html>
