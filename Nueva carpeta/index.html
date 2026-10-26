@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Auramon: Valle de la Sincronía</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="game-container">
+
+        <!-- Pantalla de autenticación -->
+        <section id="auth" class="screen active">
+            <div class="auth-box">
+                <h1>Auramon</h1>
+                <p class="auth-sub">Valle de la Sincronía</p>
+
+                <div class="tabs">
+                    <button type="button" class="tab active" id="tabLogin" data-a="tab" data-v="login">Iniciar Sesión</button>
+                    <button type="button" class="tab" id="tabRegister" data-a="tab" data-v="register">Registrarse</button>
+                </div>
+
+                <form id="loginForm" class="auth-form" autocomplete="on">
+                    <label for="loginUser">Usuario</label>
+                    <input type="text" id="loginUser" name="username" autocomplete="username" required>
+
+                    <label for="loginPass">Contraseña</label>
+                    <input type="password" id="loginPass" name="password" autocomplete="current-password" required>
+
+                    <button type="submit" class="btn-aura" id="loginSubmit">Entrar</button>
+                </form>
+
+                <form id="registerForm" class="auth-form hidden" autocomplete="on">
+                    <label for="regUser">Usuario</label>
+                    <input type="text" id="regUser" name="username" autocomplete="username" required>
+
+                    <label for="regPass">Contraseña</label>
+                    <input type="password" id="regPass" name="password" autocomplete="new-password" required>
+
+                    <label for="regPass2">Repetir contraseña</label>
+                    <input type="password" id="regPass2" name="password2" autocomplete="new-password" required>
+
+                    <button type="submit" class="btn-aura" id="registerSubmit">Crear cuenta</button>
+                </form>
+
+                <p id="authMsg" class="auth-msg" role="alert"></p>
+            </div>
+        </section>
+
+        <!-- Menú principal -->
+        <section id="menu" class="screen">
+            <div class="session-bar">
+                <span id="userLabel"></span>
+                <button type="button" class="link-btn" data-a="logout">Cerrar sesión</button>
+            </div>
+            <nav class="menu-buttons">
+                <button type="button" class="btn-aura" data-a="start">Iniciar Partida</button>
+                <button type="button" class="btn-aura" id="btnCont" data-a="cont" style="display:none">Continuar</button>
+                <button type="button" class="btn-aura" data-a="dex">Auramons</button>
+            </nav>
+        </section>
+
+        <!-- Fases del juego -->
+        <section id="draft" class="screen"></section>
+        <section id="battle" class="screen"></section>
+        <section id="shop" class="screen"></section>
+
+        <!-- Ventana flotante -->
+        <div id="overlay" class="overlay">
+            <div id="panel" class="panel"></div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>

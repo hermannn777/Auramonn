@@ -1,0 +1,445 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    background: #0b1020;
+    overflow: hidden;
+    font-family: "Trebuchet MS", Verdana, sans-serif;
+}
+
+/* Contenedor 5:3 con el fondo del bosque fijado como capa trasera permanente */
+.game-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(98vw, calc(98vh * 5 / 3));
+    aspect-ratio: 5 / 3;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(0, 255, 240, 0.25), 0 20px 50px rgba(0, 0, 0, 0.7);
+    background:
+        url("imagenes/fondo_auramon.png") center / cover no-repeat,
+        radial-gradient(circle at 30% 20%, #2a6a3a, #0c2418 75%);
+    container-type: inline-size;
+    font-size: 1.7cqw;
+    color: #e8f6f4;
+}
+
+/* Las pantallas son transparentes: el fondo nunca desaparece */
+.screen {
+    display: none;
+    position: absolute;
+    inset: 0;
+    padding: 2cqw;
+    background: transparent;
+}
+
+.screen.active {
+    display: block;
+}
+
+#menu {
+    padding: 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Paneles semitransparentes para legibilidad sobre el fondo */
+.pane {
+    background: rgba(8, 16, 28, 0.74);
+    border: 2px solid #25506a;
+    border-radius: 12px;
+    padding: 1.5cqw;
+}
+
+/* Botones con placa */
+.btn-aura {
+    height: 5.2cqw;
+    border: 0;
+    cursor: pointer;
+    background:
+        url("imagenes/boton_auramon.png") center / 100% 100% no-repeat,
+        #1c3a4a;
+    border-radius: 8px;
+    color: #f3e5ab;
+    font-weight: 700;
+    font-size: 1.8cqw;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.btn-aura:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 8px #00fff0);
+}
+
+.btn-aura:active {
+    color: #fff;
+}
+
+.btn-aura.sm {
+    height: 4.2cqw;
+    font-size: 1.5cqw;
+}
+
+.btn-aura:disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* Menú principal */
+.menu-buttons {
+    position: absolute;
+    top: 65%;
+    left: 65%;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.session-bar {
+    position: absolute;
+    top: 1.5cqw;
+    right: 2cqw;
+    display: flex;
+    gap: 1cqw;
+    align-items: center;
+    background: rgba(8, 16, 28, 0.7);
+    border-radius: 20px;
+    padding: 0.6cqw 1.4cqw;
+    font-size: 1.4cqw;
+}
+
+.link-btn {
+    background: none;
+    border: 0;
+    color: #00fff0;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 1.3cqw;
+}
+
+/* Autenticación */
+#auth {
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#auth.active {
+    display: flex;
+}
+
+.auth-box {
+    width: 42%;
+    text-align: center;
+    background: rgba(8, 16, 28, 0.85);
+    border: 3px solid #00fff0;
+    border-radius: 16px;
+    box-shadow: 0 0 25px rgba(0, 255, 240, 0.5);
+    padding: 2cqw 2.4cqw;
+}
+
+.auth-box h1 {
+    color: #f3e5ab;
+    font-size: 3.4cqw;
+}
+
+.auth-sub {
+    color: #9fc4c0;
+    margin-bottom: 1.2cqw;
+}
+
+.tabs {
+    display: flex;
+    gap: 0.6cqw;
+    margin-bottom: 1.2cqw;
+}
+
+.tab {
+    flex: 1;
+    padding: 0.8cqw;
+    border: 2px solid #25506a;
+    border-radius: 8px;
+    background: #14263b;
+    color: #9fc4c0;
+    cursor: pointer;
+    font-size: 1.5cqw;
+    font-weight: 700;
+}
+
+.tab.active {
+    border-color: #00fff0;
+    color: #f3e5ab;
+    box-shadow: 0 0 10px #00fff0;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6cqw;
+    text-align: left;
+}
+
+.auth-form label {
+    color: #f3e5ab;
+    font-size: 1.4cqw;
+}
+
+.auth-form input {
+    padding: 0.8cqw 1cqw;
+    border: 2px solid #25506a;
+    border-radius: 8px;
+    background: #0b1624;
+    color: #e8f6f4;
+    font-size: 1.6cqw;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #00fff0;
+    box-shadow: 0 0 8px #00fff0;
+}
+
+.auth-form .btn-aura {
+    margin-top: 1cqw;
+    height: 4.4cqw;
+}
+
+.auth-msg {
+    min-height: 2.4cqw;
+    margin-top: 1cqw;
+    font-size: 1.4cqw;
+    color: #ff8a7a;
+}
+
+.auth-msg.ok {
+    color: #7dffb0;
+}
+
+/* Texto y componentes generales */
+h2 {
+    color: #00fff0;
+    font-size: 2.2cqw;
+    margin-bottom: 1cqw;
+}
+
+small {
+    display: block;
+    color: #9fc4c0;
+    font-size: 1.2cqw;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1cqw;
+    max-height: 30cqw;
+    overflow: auto;
+    padding: 0.5cqw;
+}
+
+.slot {
+    background: #14263b;
+    border: 2px solid #25506a;
+    border-radius: 10px;
+    padding: 0.8cqw;
+    text-align: center;
+    cursor: pointer;
+}
+
+.slot.sel {
+    border-color: #00fff0;
+    box-shadow: 0 0 12px #00fff0;
+}
+
+.slot.off {
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+.slot .e,
+.slot .emo {
+    font-size: 3cqw;
+}
+
+.sprite {
+    width: 6cqw;
+    height: 6cqw;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.slot .sprite {
+    width: 5cqw;
+    height: 5cqw;
+}
+
+.emo {
+    font-size: 5cqw;
+    line-height: 1;
+}
+
+.bar {
+    height: 0.9cqw;
+    background: #09121d;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0.3cqw 0;
+}
+
+.bar i {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #00fff0, #4be37a);
+}
+
+.bar.low i {
+    background: #e35a4b;
+}
+
+.row {
+    display: flex;
+    gap: 1cqw;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 1cqw;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    color: #f3e5ab;
+    font-weight: 700;
+    background: rgba(8, 16, 28, 0.7);
+    border-radius: 20px;
+    padding: 0.5cqw 1.5cqw;
+}
+
+/* Combate */
+.mon {
+    position: absolute;
+    display: flex;
+    gap: 1cqw;
+    align-items: center;
+    background: rgba(14, 27, 43, 0.85);
+    border: 2px solid #25506a;
+    border-radius: 12px;
+    padding: 1cqw;
+    width: 38cqw;
+}
+
+.mon .sprite {
+    width: 9cqw;
+    height: 9cqw;
+}
+
+.mon .info {
+    flex: 1;
+}
+
+.enemy {
+    top: 7cqw;
+    right: 3cqw;
+}
+
+.player {
+    top: 25cqw;
+    left: 3cqw;
+}
+
+.log {
+    position: absolute;
+    right: 3cqw;
+    top: 26cqw;
+    width: 46cqw;
+    height: 14cqw;
+    background: rgba(14, 27, 43, 0.9);
+    border: 2px solid #00fff0;
+    border-radius: 10px;
+    padding: 1cqw;
+    overflow: hidden;
+    font-size: 1.4cqw;
+}
+
+.acts {
+    position: absolute;
+    left: 3cqw;
+    right: 3cqw;
+    bottom: 1.5cqw;
+    display: flex;
+    gap: 1cqw;
+}
+
+.acts .btn-aura {
+    flex: 1;
+}
+
+/* Ventana flotante */
+.overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+}
+
+.overlay.on {
+    display: flex;
+}
+
+.panel {
+    width: 78%;
+    max-height: 88%;
+    overflow: auto;
+    background: #0d1a2a;
+    border: 3px solid #00fff0;
+    border-radius: 14px;
+    box-shadow: 0 0 25px #00fff0;
+    padding: 2cqw;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #14263b;
+    border-radius: 8px;
+    padding: 0.8cqw 1.2cqw;
+    margin-bottom: 0.8cqw;
+}
+
+.item .sprite {
+    width: 3.4cqw;
+    height: 3.4cqw;
+    vertical-align: middle;
+}
+
+.item .emo {
+    font-size: 2.6cqw;
+}
+
+.dim {
+    filter: grayscale(1);
+    opacity: 0.5;
+}
+
+@media (max-width: 600px) {
+    .game-container {
+        font-size: 2.2cqw;
+    }
+
+    .auth-box {
+        width: 80%;
+    }
+}
