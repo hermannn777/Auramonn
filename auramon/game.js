@@ -19,38 +19,39 @@ const CONFIG = {
 /* =========================================================
    BASE DE DATOS DE ESPECIES (30)
    Formato: [nombre, tipo1, tipo2, hp, atk, def, vel, coste, emoji]
+   Se mantienen especies reales de Pokémon con sus tipos oficiales.
    ========================================================= */
 const RAW_SPECIES = [
-    ["Charmander", "Fire", "", 39, 52, 43, 65, 3, "🦎"],
+    ["Charmander", "Fire", "", 39, 52, 43, 65, 3, "🔥"],
     ["Squirtle", "Water", "", 44, 48, 65, 43, 3, "🐢"],
-    ["Bulbasaur", "Grass", "", 45, 49, 49, 45, 3, "🌱"],
-    ["Pikachu", "Electric", "", 35, 55, 40, 90, 3, "🐭"],
+    ["Bulbasaur", "Grass", "Poison", 45, 49, 49, 45, 3, "🌱"],
+    ["Pikachu", "Electric", "", 35, 55, 40, 90, 3, "⚡"],
     ["Rattata", "Normal", "", 30, 56, 35, 72, 3, "🐀"],
     ["Pidgey", "Normal", "Flying", 40, 45, 40, 56, 3, "🐦"],
-    ["Geodude", "Rock", "", 40, 80, 100, 20, 3, "🪨"],
+    ["Geodude", "Rock", "Ground", 40, 80, 100, 20, 3, "🪨"],
     ["Machop", "Fighting", "", 70, 80, 50, 35, 3, "💪"],
     ["Abra", "Psychic", "", 25, 20, 15, 90, 3, "🔮"],
-    ["Gastly", "Ghost", "", 30, 35, 30, 80, 3, "👻"],
+    ["Gastly", "Ghost", "Poison", 30, 35, 30, 80, 3, "👻"],
     ["Dratini", "Dragon", "", 41, 64, 45, 50, 3, "🐉"],
     ["Magnemite", "Electric", "Steel", 25, 35, 70, 45, 3, "🧲"],
     ["Clefairy", "Fairy", "", 70, 45, 48, 35, 3, "🌙"],
     ["Zubat", "Poison", "Flying", 40, 45, 35, 55, 3, "🦇"],
     ["Growlithe", "Fire", "", 55, 70, 45, 60, 3, "🐕"],
     ["Eevee", "Normal", "", 55, 55, 50, 55, 3, "🦊"],
-    ["Aurafox", "Aura", "", 60, 75, 60, 80, 6, "🔆"],
-    ["Lumiwisp", "Ghost", "Aura", 55, 70, 55, 85, 6, "🕯️"],
-    ["Sigilmoth", "Bug", "Aura", 65, 80, 60, 70, 6, "🦋"],
-    ["Pulsehound", "Fire", "Aura", 70, 90, 60, 75, 6, "🐺"],
-    ["Noctaura", "Dark", "Aura", 65, 85, 65, 80, 6, "🌑"],
-    ["Halowyrm", "Dragon", "Aura", 75, 90, 70, 65, 6, "🐲"],
-    ["Zenaur", "Psychic", "Aura", 70, 80, 70, 85, 6, "🧘"],
-    ["Spectraura", "Ghost", "Aura", 60, 95, 50, 90, 6, "💀"],
-    ["Ferraura", "Steel", "Aura", 80, 85, 100, 50, 6, "🛡️"],
-    ["Vitalis", "Fairy", "Aura", 90, 65, 80, 60, 6, "🧚"],
-    ["Floraviga", "Grass", "Aura", 85, 85, 80, 60, 6, "🌿"],
-    ["Aurachnid", "Electric", "Aura", 75, 95, 70, 95, 6, "🕷️"],
-    ["Auroryx", "Aura", "", 95, 100, 85, 80, 6, "🦌"],
-    ["Chronaura", "Water", "Aura", 80, 80, 80, 75, 6, "⌛"]
+    ["Snorlax", "Normal", "", 160, 110, 65, 30, 6, "🛌"],
+    ["Butterfree", "Bug", "Flying", 60, 45, 50, 70, 6, "🦋"],
+    ["Gengar", "Ghost", "Poison", 60, 65, 60, 110, 6, "👾"],
+    ["Gyarados", "Water", "Flying", 95, 125, 79, 81, 6, "🐉"],
+    ["Dragonite", "Dragon", "Flying", 91, 134, 95, 80, 6, "🐲"],
+    ["Alakazam", "Psychic", "", 55, 50, 45, 120, 6, "🧠"],
+    ["Jolteon", "Electric", "", 65, 65, 60, 130, 6, "⚡"],
+    ["Flareon", "Fire", "", 65, 130, 60, 65, 6, "🔥"],
+    ["Vaporeon", "Water", "", 130, 65, 60, 65, 6, "💧"],
+    ["Onix", "Rock", "Ground", 35, 45, 160, 70, 6, "🪨"],
+    ["Mew", "Psychic", "", 100, 100, 100, 100, 6, "✨"],
+    ["Psyduck", "Water", "", 50, 52, 48, 55, 6, "🦆"],
+    ["Lapras", "Water", "Ice", 130, 85, 80, 60, 6, "🐳"],
+    ["Charizard", "Fire", "Flying", 78, 84, 78, 100, 6, "🐉"]
 ];
 
 const TYPE_COLORS = {
@@ -69,7 +70,9 @@ const TYPE_COLORS = {
     Normal: "#d9d4b8",
     Flying: "#a4d4ff",
     Poison: "#bf7ae9",
-    Aura: "#ffd166"
+    Ground: "#d0a562",
+    Ice: "#a6ebff",
+    Fighting: "#d9765d"
 };
 
 function makeSpriteDataUri(emoji) {
@@ -81,38 +84,47 @@ function makeSpriteDataUri(emoji) {
     return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 }
 
-const SP = RAW_SPECIES.map((r, i) => ({
-    id: i + 1,
-    name: r[0],
-    t1: r[1],
-    t2: r[2],
-    hp: r[3],
-    atk: r[4],
-    def: r[5],
-    spd: r[6],
-    cost: r[7],
-    emoji: r[8],
-    image: "imagenes/auramons/" + r[0].toLowerCase() + ".png",
-    fallbackSprite: makeSpriteDataUri(r[8])
-}));
+const SP = RAW_SPECIES.map((r, i) => {
+    const baseName = r[0].toLowerCase();
+    return {
+        id: i + 1,
+        name: r[0],
+        t1: r[1],
+        t2: r[2],
+        hp: r[3],
+        atk: r[4],
+        def: r[5],
+        spd: r[6],
+        cost: r[7],
+        emoji: r[8],
+        image: "imagenes/auramons/" + baseName + ".png",
+        frontImage: "imagenes/auramons/" + baseName + "-front.png",
+        backImage: "imagenes/auramons/" + baseName + "-back.png",
+        fallbackSprite: makeSpriteDataUri(r[8])
+    };
+});
 
 /* Tabla de tipos (ataque -> defensa -> multiplicador) */
 const CH = {
-    Aura: { Psychic: 2, Ghost: 2, Dragon: 2 },
-    Steel: { Aura: 2, Fairy: 2, Rock: 2 },
-    Fairy: { Aura: 2, Dragon: 2, Fighting: 2, Steel: 0.5, Fire: 0.5 },
-    Electric: { Aura: 0.5, Water: 2, Flying: 2, Grass: 0.5, Electric: 0.5 },
-    Grass: { Aura: 0.5, Water: 2, Rock: 2, Fire: 0.5, Grass: 0.5, Flying: 0.5 },
-    Fire: { Grass: 2, Steel: 2, Water: 0.5, Fire: 0.5 },
-    Water: { Fire: 2, Rock: 2, Grass: 0.5, Water: 0.5 },
-    Psychic: { Fighting: 2, Poison: 2, Steel: 0.5 },
-    Ghost: { Psychic: 2, Ghost: 2 },
-    Fighting: { Normal: 2, Rock: 2, Steel: 2, Psychic: 0.5, Fairy: 0.5 },
+    Steel: { Ice: 2, Rock: 2, Fairy: 2, Fire: 0.5, Water: 0.5, Electric: 0.5, Steel: 0.5 },
+    Fairy: { Fire: 0.5, Fighting: 2, Dragon: 2, Poison: 0.5, Steel: 0.5 },
+    Electric: { Water: 2, Flying: 2, Grass: 0.5, Electric: 0.5, Dragon: 0.5, Ground: 0 },
+    Grass: { Water: 2, Rock: 2, Fire: 0.5, Grass: 0.5, Flying: 0.5, Bug: 0.5, Poison: 0.5, Dragon: 0.5, Steel: 0.5, Ground: 2 },
+    Fire: { Grass: 2, Ice: 2, Steel: 2, Fire: 0.5, Water: 0.5, Rock: 0.5, Dragon: 0.5 },
+    Water: { Fire: 2, Ground: 2, Rock: 2, Water: 0.5, Grass: 0.5, Dragon: 0.5 },
+    Psychic: { Fighting: 2, Poison: 2, Psychic: 0.5, Steel: 0.5, Dark: 0 },
+    Ghost: { Ghost: 2, Psychic: 0.5, Normal: 0 },
+    Fighting: { Normal: 2, Ice: 2, Rock: 2, Dark: 2, Steel: 2, Psychic: 0.5, Fairy: 0.5, Poison: 0.5, Flying: 0.5 },
     Dragon: { Dragon: 2, Steel: 0.5, Fairy: 0.5 },
-    Rock: { Fire: 2, Flying: 2 },
+    Rock: { Fire: 2, Ice: 2, Flying: 2, Bug: 2, Fighting: 0.5, Ground: 0.5 },
     Normal: { Rock: 0.5, Steel: 0.5 },
-    Flying: { Grass: 2, Fighting: 2 },
-    Poison: { Grass: 2, Fairy: 2 }
+    Flying: { Grass: 2, Fighting: 2, Bug: 2, Rock: 0.5, Steel: 0.5, Electric: 0.5 },
+    Poison: { Grass: 2, Fairy: 2, Poison: 0.5, Ground: 0.5, Rock: 0.5 },
+    Ground: { Fire: 2, Electric: 2, Poison: 2, Rock: 2, Steel: 2, Grass: 0.5, Bug: 0.5, Flying: 0 },
+    Ice: { Grass: 2, Ground: 2, Flying: 2, Water: 0.5, Dragon: 2, Fire: 0.5, Ice: 0.5 },
+    Bug: { Grass: 2, Psychic: 2, Dark: 0.5, Fire: 0.5, Fighting: 0.5, Poison: 0.5, Flying: 0.5, Ghost: 0.5, Fairy: 0.5 },
+    Dark: { Psychic: 2, Ghost: 2, Fighting: 0.5, Fairy: 0.5 },
+    Aura: { Psychic: 2, Ghost: 2, Dragon: 2 }
 };
 
 const ITEMS = {
@@ -129,13 +141,14 @@ const $ = (selector) => document.querySelector(selector);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
 const eff = (t, d) => (CH[t] && CH[t][d]) || 1;
+const CRIT_CHANCE = 0.12;
 
 let USER = null;   // usuario con sesión activa
 let SAVE = null;   // progreso persistente del usuario
 let R = null;      // partida en curso (run)
 let B = null;      // combate actual
 let waveMusicEnabled = localStorage.getItem(CONFIG.WAVE_MUSIC_KEY) !== "false";
-let D = { sel: [] };
+let D = { sel: [], limit8: true };
 let IT = { k: null, ctx: null, forced: false };
 
 const saveKey = () => "auramon_save_" + USER;
@@ -344,9 +357,10 @@ function refreshMenu() {
 }
 
 /* Imagen individual de cada Pokémon con respaldo en emoji si falta el archivo */
-function sprite(index, extraClass) {
+function sprite(index, extraClass, side = "front") {
     const d = SP[index];
-    return '<img class="sprite ' + (extraClass || "") + '" src="' + d.image +
+    const selected = side === "back" ? (d.backImage || d.image) : (d.frontImage || d.image);
+    return '<img class="sprite ' + (extraClass || "") + '" src="' + selected +
         '" alt="' + d.name + '" data-fallback="' + d.fallbackSprite +
         '" data-emoji="' + d.emoji + '">';
 }
@@ -592,9 +606,10 @@ function levelTo(m, lv) {
 function card(m, cls) {
     const low = m.hp / m.mhp < 0.25;
     const frame = cls === "enemy" ? "fondo-rival.png" : "fondo-jugador.png";
+    const side = cls === "enemy" ? "front" : "back";
     return '<div class="mon ' + cls + '">' +
         '<img class="battle-panel-image" src="imagenes/combate/' + frame + '" alt="" aria-hidden="true">' +
-        '<div class="mon-content">' + sprite(m.s) +
+        '<div class="mon-content">' + sprite(m.s, "", side) +
         '<div class="info"><div class="mon-heading"><b>' + SP[m.s].name + '</b>' +
         '<span class="mon-level">Nv.' + m.lv + '</span></div>' +
         '<div class="bar ' + (low ? "low" : "") + '"><i style="width:' + (100 * m.hp / m.mhp) + '%"></i></div>' +
@@ -609,8 +624,9 @@ const spent = () => D.sel.reduce((total, s) => total + SP[s].cost, 0);
 function renderDraft() {
     const left = CONFIG.BUDGET - spent();
     let slots = "";
+    const pool = D.limit8 ? SAVE.unlocked.slice(0, 8) : SAVE.unlocked;
 
-    SAVE.unlocked.forEach((s) => {
+    pool.forEach((s) => {
         const on = D.sel.includes(s);
         const off = !on && SP[s].cost > left;
         slots += '<div class="slot ' + (on ? "sel" : "") + ' ' + (off ? "off" : "") +
@@ -634,6 +650,8 @@ function renderDraft() {
         (D.sel.length ? "" : "disabled") + ' aria-label="Comenzar Oleada 1">' +
         '<img class="draft-button-image" src="imagenes/seleccion/comenzar-oleada.png" alt="">' +
         '<span class="draft-button-label">Comenzar Oleada</span></button>' +
+        '<button type="button" class="btn-aura sm draft-button" data-a="toggleLimit" aria-label="Alternar lista de Pokémon">' +
+        '<span class="draft-button-label">' + (D.limit8 ? 'Ver 8 Pokémons' : 'Ver todos') + '</span></button>' +
         '<button type="button" class="btn-aura sm draft-button" data-a="menu" aria-label="Volver">' +
         '<img class="draft-button-image" src="imagenes/seleccion/volver.png" alt="">' +
         '<span class="draft-button-label">Volver</span></button>' +
@@ -643,15 +661,20 @@ function renderDraft() {
 /* =========================================================
    OLEADAS
    ========================================================= */
+function enemyLevelForWave(w) {
+    const averageTeamLevel = R && R.team.length ? Math.round(R.team.reduce((sum, m) => sum + m.lv, 0) / R.team.length) : 5;
+    return Math.max(averageTeamLevel, 5) + Math.floor((w - 1) / 5);
+}
+
 function waveEnemies(w) {
-    const lv = 6 + Math.floor(w / 2);
+    const lv = enemyLevelForWave(w);
     const auraPool = [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 29];
 
     if (w === 20) {
-        return { t: { n: "Líder Silas", medal: "Raíz" }, l: [mk(2, 14), mk(26, 16)] };
+        return { t: { n: "Líder Silas", medal: "Raíz" }, l: [mk(2, Math.max(14, lv)), mk(26, Math.max(16, lv + 2))] };
     }
     if (w === 50) {
-        return { t: { n: "Líder Zeo", medal: "Centella" }, l: [mk(3, 29), mk(27, 31)] };
+        return { t: { n: "Líder Zeo", medal: "Centella" }, l: [mk(3, Math.max(29, lv + 2)), mk(27, Math.max(31, lv + 4))] };
     }
     if (w === 45) {
         const alpha = mk(28, lv + 3);
@@ -734,10 +757,88 @@ function renderBattle() {
         (B.menu === "main" ? main : moves) + '</div>';
 }
 
+function triggerImpactMotion(attackerSide) {
+    const battle = document.querySelector("#battle");
+    if (!battle) {
+        return;
+    }
+
+    const enemySprite = battle.querySelector(".enemy .sprite");
+    const playerSprite = battle.querySelector(".player .sprite");
+    if (!enemySprite || !playerSprite) {
+        return;
+    }
+
+    const isPlayerAttack = attackerSide === "player";
+    enemySprite.classList.remove("impact-lunge", "impact-recoil", "impact-forward", "impact-backward");
+    playerSprite.classList.remove("impact-lunge", "impact-recoil", "impact-forward", "impact-backward");
+
+    if (isPlayerAttack) {
+        playerSprite.classList.add("impact-forward");
+        enemySprite.classList.add("impact-backward");
+    } else {
+        enemySprite.classList.add("impact-forward");
+        playerSprite.classList.add("impact-backward");
+    }
+
+    window.setTimeout(() => {
+        enemySprite.classList.remove("impact-lunge", "impact-recoil", "impact-forward", "impact-backward");
+        playerSprite.classList.remove("impact-lunge", "impact-recoil", "impact-forward", "impact-backward");
+    }, 620);
+}
+
+function spawnImpactEffect(targetSide, damage, crit) {
+    const battle = document.querySelector("#battle");
+    if (!battle) {
+        return;
+    }
+
+    const attackerSide = targetSide === "enemy" ? "player" : "enemy";
+    const targetSprite = battle.querySelector(targetSide === "enemy" ? ".enemy .sprite" : ".player .sprite");
+    const attackerSprite = battle.querySelector(attackerSide === "enemy" ? ".enemy .sprite" : ".player .sprite");
+    if (!targetSprite || !attackerSprite) {
+        return;
+    }
+
+    const overlay = document.createElement("div");
+    overlay.className = "battle-impact-overlay " + (crit ? "crit" : "");
+
+    const targetRect = targetSprite.getBoundingClientRect();
+    const attackerRect = attackerSprite.getBoundingClientRect();
+    const battleRect = battle.getBoundingClientRect();
+
+    const impactX = ((targetRect.right + attackerRect.left) / 2) - battleRect.left;
+    const impactY = ((targetRect.top + targetRect.bottom + attackerRect.top + attackerRect.bottom) / 4) - battleRect.top;
+
+    const x = impactX;
+    const y = impactY;
+
+    overlay.style.left = x + "px";
+    overlay.style.top = y + "px";
+
+    overlay.innerHTML = `
+        <div class="impact-particles">
+            <span class="impact-particle p1"></span>
+            <span class="impact-particle p2"></span>
+            <span class="impact-particle p3"></span>
+            <span class="impact-particle p4"></span>
+            <span class="impact-particle p5"></span>
+            <span class="impact-particle p6"></span>
+            <span class="impact-particle p7"></span>
+            <span class="impact-particle p8"></span>
+        </div>
+        <div class="battle-damage-number ${crit ? "crit" : ""}">-${damage}</div>
+    `;
+
+    battle.appendChild(overlay);
+    window.setTimeout(() => overlay.remove(), 900);
+}
+
 async function hit(a, d, mv) {
     const attacker = SP[a.s];
     const defender = SP[d.s];
     const move = mv || { n: "Forcejeo", t: "Normal", p: 35 };
+    const crit = Math.random() < CRIT_CHANCE;
 
     B.log.push((a === act() ? "" : "Rival ") + attacker.name + " usa " + move.n + ".");
 
@@ -745,7 +846,12 @@ async function hit(a, d, mv) {
     const stab = (attacker.t1 === move.t || attacker.t2 === move.t) ? 1.3 : 1;
     const auraBoost = move.t === "Aura" ? a.ab : 1;
     const base = ((2 * a.lv / 5 + 2) * move.p * a.atk / d.def / 50 + 2);
-    const damage = Math.max(1, Math.floor(base * effectiveness * stab * auraBoost * rnd(85, 100) / 100));
+    let damage = Math.max(1, Math.floor(base * effectiveness * stab * auraBoost * rnd(85, 100) / 100));
+
+    if (crit) {
+        damage = Math.max(1, Math.floor(damage * 1.8));
+        B.log.push('<span class="crit-hit">¡GOLPE CRÍTICO!</span>');
+    }
 
     d.hp = Math.max(0, d.hp - damage);
 
@@ -759,6 +865,10 @@ async function hit(a, d, mv) {
     }
 
     renderBattle();
+    triggerImpactMotion(a === act() ? "player" : "enemy");
+    if (d === B.e) {
+        spawnImpactEffect("enemy", damage, crit);
+    }
     await sleep(750);
 }
 
@@ -839,7 +949,7 @@ function winBattle(captured) {
         SAVE.medals.push(B.t.medal);
     }
 
-    const lv = 5 + Math.floor(R.wave / 2);
+    const lv = 8 + Math.floor(R.wave / 2);
     R.team.forEach((m) => levelTo(m, lv));
     SAVE.best = Math.max(SAVE.best, R.wave);
     store();
@@ -1105,7 +1215,7 @@ const ACT = {
     logout: logout,
 
     start() {
-        D = { sel: [] };
+        D = { sel: [], limit8: true };
         renderDraft();
         show("draft");
     },
@@ -1156,6 +1266,11 @@ const ACT = {
         } else if (spent() + SP[s].cost <= CONFIG.BUDGET && D.sel.length < CONFIG.MAX_TEAM) {
             D.sel.push(s);
         }
+        renderDraft();
+    },
+
+    toggleLimit() {
+        D.limit8 = !D.limit8;
         renderDraft();
     },
 

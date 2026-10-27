@@ -145,41 +145,42 @@ CREATE TABLE `mochilas` (
 -- ---------------------------------------------------------
 INSERT INTO `tipos` (`id_tipo`, `nombre`) VALUES
     (1, 'Normal'), (2, 'Fire'), (3, 'Water'), (4, 'Grass'), (5, 'Electric'), (6, 'Psychic'),
-    (7, 'Ghost'), (8, 'Dragon'), (9, 'Steel'), (10, 'Fairy'), (11, 'Aura'), (12, 'Rock'),
-    (13, 'Fighting'), (14, 'Bug'), (15, 'Dark'), (16, 'Flying'), (17, 'Poison');
+    (7, 'Ghost'), (8, 'Dragon'), (9, 'Steel'), (10, 'Fairy'), (11, 'Rock'),
+    (12, 'Fighting'), (13, 'Bug'), (14, 'Dark'), (15, 'Flying'), (16, 'Poison'),
+    (17, 'Ground'), (18, 'Ice');
 
 INSERT INTO `pokemones`
     (`id_pokemon`, `nombre`, `id_tipo_1`, `id_tipo_2`, `hp_base`, `ataque_base`, `defensa_base`, `velocidad_base`, `coste`) VALUES
     (1, 'Charmander', 2, NULL, 39, 52, 43, 65, 3),
     (2, 'Squirtle', 3, NULL, 44, 48, 65, 43, 3),
-    (3, 'Bulbasaur', 4, NULL, 45, 49, 49, 45, 3),
+    (3, 'Bulbasaur', 4, 16, 45, 49, 49, 45, 3),
     (4, 'Pikachu', 5, NULL, 35, 55, 40, 90, 3),
     (5, 'Rattata', 1, NULL, 30, 56, 35, 72, 3),
-    (6, 'Pidgey', 1, 16, 40, 45, 40, 56, 3),
-    (7, 'Geodude', 12, NULL, 40, 80, 100, 20, 3),
-    (8, 'Machop', 13, NULL, 70, 80, 50, 35, 3),
+    (6, 'Pidgey', 1, 15, 40, 45, 40, 56, 3),
+    (7, 'Geodude', 11, 17, 40, 80, 100, 20, 3),
+    (8, 'Machop', 12, NULL, 70, 80, 50, 35, 3),
     (9, 'Abra', 6, NULL, 25, 20, 15, 90, 3),
-    (10, 'Gastly', 7, NULL, 30, 35, 30, 80, 3),
+    (10, 'Gastly', 7, 16, 30, 35, 30, 80, 3),
     (11, 'Dratini', 8, NULL, 41, 64, 45, 50, 3),
     (12, 'Magnemite', 5, 9, 25, 35, 70, 45, 3),
     (13, 'Clefairy', 10, NULL, 70, 45, 48, 35, 3),
-    (14, 'Zubat', 17, 16, 40, 45, 35, 55, 3),
+    (14, 'Zubat', 16, 15, 40, 45, 35, 55, 3),
     (15, 'Growlithe', 2, NULL, 55, 70, 45, 60, 3),
     (16, 'Eevee', 1, NULL, 55, 55, 50, 55, 3),
-    (17, 'Aurafox', 11, NULL, 60, 75, 60, 80, 6),
-    (18, 'Lumiwisp', 7, 11, 55, 70, 55, 85, 6),
-    (19, 'Sigilmoth', 14, 11, 65, 80, 60, 70, 6),
-    (20, 'Pulsehound', 2, 11, 70, 90, 60, 75, 6),
-    (21, 'Noctaura', 15, 11, 65, 85, 65, 80, 6),
-    (22, 'Halowyrm', 8, 11, 75, 90, 70, 65, 6),
-    (23, 'Zenaur', 6, 11, 70, 80, 70, 85, 6),
-    (24, 'Spectraura', 7, 11, 60, 95, 50, 90, 6),
-    (25, 'Ferraura', 9, 11, 80, 85, 100, 50, 6),
-    (26, 'Vitalis', 10, 11, 90, 65, 80, 60, 6),
-    (27, 'Floraviga', 4, 11, 85, 85, 80, 60, 6),
-    (28, 'Aurachnid', 5, 11, 75, 95, 70, 95, 6),
-    (29, 'Auroryx', 11, NULL, 95, 100, 85, 80, 6),
-    (30, 'Chronaura', 3, 11, 80, 80, 80, 75, 6);
+    (17, 'Snorlax', 1, NULL, 160, 110, 65, 30, 6),
+    (18, 'Butterfree', 13, 15, 60, 45, 50, 70, 6),
+    (19, 'Gengar', 7, 16, 60, 65, 60, 110, 6),
+    (20, 'Gyarados', 3, 15, 95, 125, 79, 81, 6),
+    (21, 'Dragonite', 8, 15, 91, 134, 95, 80, 6),
+    (22, 'Alakazam', 6, NULL, 55, 50, 45, 120, 6),
+    (23, 'Jolteon', 5, NULL, 65, 65, 60, 130, 6),
+    (24, 'Flareon', 2, NULL, 65, 130, 60, 65, 6),
+    (25, 'Vaporeon', 3, NULL, 130, 65, 60, 65, 6),
+    (26, 'Onix', 11, 17, 35, 45, 160, 70, 6),
+    (27, 'Mew', 6, NULL, 100, 100, 100, 100, 6),
+    (28, 'Psyduck', 3, NULL, 50, 52, 48, 55, 6),
+    (29, 'Lapras', 3, 18, 130, 85, 80, 60, 6),
+    (30, 'Charizard', 2, 15, 78, 84, 78, 100, 6);
 
 -- El orden de los objetos es el que usa la API: 1 pot, 2 rev, 3 ber, 4 aur
 INSERT INTO `objetos` (`id_objeto`, `nombre`, `descripcion`, `precio`, `peso`) VALUES
