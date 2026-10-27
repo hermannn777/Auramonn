@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Auramon: Valle de la Sincronía</title>
+    <link rel="stylesheet" href="style.css?v=12">
+</head>
+
+<body>
+    <div class="game-container">
+        <audio id="menuMusic" loop preload="none">
+            <source src="audio/musica-menu.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="waveMusic" loop preload="none">
+            <source src="audio/musica-oleada.mp3" type="audio/mpeg">
+        </audio>
+        <video class="game-background-video" autoplay muted loop playsinline aria-hidden="true"
+            poster="imagenes/fondos/juego.jpg">
+            <source src="imagenes/fondos/juego.mp4" type="video/mp4">
+        </video>
+
+        <!-- Pantalla de autenticación -->
+        <section id="auth" class="screen active">
+            <div class="auth-box login-mode">
+                <img class="auth-background-image auth-background-login" src="imagenes/autenticacion/fondo-iniciar-sesion.png" alt="" aria-hidden="true">
+                <img class="auth-background-image auth-background-register" src="imagenes/autenticacion/fondo-registro.png" alt="" aria-hidden="true">
+                <div class="auth-content">
+                    <div class="tabs">
+                        <button type="button" class="tab active" id="tabLogin" data-a="tab" data-v="login" aria-label="Iniciar Sesión">
+                            <img class="auth-button-image" src="imagenes/autenticacion/boton-iniciar-sesion.png" alt="">
+                            <span class="auth-button-label">Iniciar Sesión</span>
+                        </button>
+                        <button type="button" class="tab" id="tabRegister" data-a="tab" data-v="register" aria-label="Registrarse">
+                            <img class="auth-button-image" src="imagenes/autenticacion/boton-registrarse.png" alt="">
+                            <span class="auth-button-label">Registrarse</span>
+                        </button>
+                    </div>
+
+                    <form id="loginForm" class="auth-form" autocomplete="on">
+                        <div class="auth-field">
+                            <label for="loginUser">Usuario</label>
+                            <input type="text" id="loginUser" name="username" autocomplete="username" required>
+                        </div>
+                        <div class="auth-field">
+                            <label for="loginPass">Contraseña</label>
+                            <input type="password" id="loginPass" name="password" autocomplete="current-password" required>
+                        </div>
+
+                        <button type="submit" class="btn-aura auth-submit" id="loginSubmit" aria-label="Entrar">
+                            <img class="auth-button-image" src="imagenes/autenticacion/entrar.png" alt="">
+                            <span class="auth-button-label">Entrar</span>
+                        </button>
+                    </form>
+
+                    <form id="registerForm" class="auth-form hidden" autocomplete="on">
+                        <div class="auth-field">
+                            <label for="regUser">Usuario</label>
+                            <input type="text" id="regUser" name="username" autocomplete="username" required>
+                        </div>
+                        <div class="auth-field">
+                            <label for="regPass">Contraseña</label>
+                            <input type="password" id="regPass" name="password" autocomplete="new-password" required>
+                        </div>
+                        <div class="auth-field">
+                            <label for="regPass2">Repetir contraseña</label>
+                            <input type="password" id="regPass2" name="password2" autocomplete="new-password" required>
+                        </div>
+
+                        <button type="submit" class="btn-aura auth-submit" id="registerSubmit" aria-label="Crear cuenta">
+                            <img class="auth-button-image" src="imagenes/autenticacion/crear-cuenta.png" alt="">
+                            <span class="auth-button-label">Crear cuenta</span>
+                        </button>
+                    </form>
+
+                    <p id="authMsg" class="auth-msg" role="alert"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menú principal -->
+        <section id="menu" class="screen">
+            <video class="menu-video" autoplay muted loop playsinline aria-hidden="true">
+                <source src="imagenes/fondos/menu.mp4" type="video/mp4">
+            </video>
+            <div class="session-bar">
+                <span id="userLabel"></span>
+                <button type="button" class="link-btn music-btn" data-a="music" aria-pressed="false"
+                    title="Reproducir música del menú">♫ Música</button>
+                <button type="button" class="link-btn" data-a="logout">Cerrar sesión</button>
+            </div>
+            <nav class="menu-buttons">
+                <button type="button" class="btn-aura menu-btn-start" data-a="start" aria-label="Iniciar Partida">
+                    <img class="menu-button-image" src="imagenes/botones/iniciar.png" alt="">
+                    <span class="menu-button-label">Iniciar Partida</span>
+                </button>
+                <button type="button" class="btn-aura menu-btn-continue" id="btnCont" data-a="cont" style="display:none" aria-label="Continuar">
+                    <img class="menu-button-image" src="imagenes/botones/continuar.png" alt="">
+                    <span class="menu-button-label">Continuar</span>
+                </button>
+                <button type="button" class="btn-aura menu-btn-dex" data-a="dex" aria-label="Auramons">
+                    <img class="menu-button-image" src="imagenes/botones/auramons.png" alt="">
+                    <span class="menu-button-label">Auramons</span>
+                </button>
+            </nav>
+        </section>
+
+        <!-- Fases del juego -->
+        <section id="draft" class="screen"></section>
+        <section id="battle" class="screen"></section>
+        <section id="shop" class="screen"></section>
+
+        <!-- Ventana flotante -->
+        <div id="overlay" class="overlay">
+            <div id="panel" class="panel"></div>
+        </div>
+    </div>
+
+    <script src="game.js?v=7"></script>
+</body>
+
+</html>
